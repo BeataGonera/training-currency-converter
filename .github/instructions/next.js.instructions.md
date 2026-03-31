@@ -1,5 +1,6 @@
 ---
 description: "Use when working with Next.js 14 App Router files. Covers server/client components, API routes, layouts, metadata, error boundaries, and streaming patterns."
+applyTo: "**/*.tsx"
 ---
 
 # Next.js 14 App Router Guidelines
