@@ -1,5 +1,5 @@
-import { ConversionResult } from '@/types';
-import { formatAmount } from '@/utils/currency';
+import { ConversionResult } from "@/types";
+import { formatAmount } from "@/utils/currency";
 
 interface ConversionHistoryProps {
   history: ConversionResult[];
@@ -33,7 +33,7 @@ export default function ConversionHistory({
             onClick={onToggle}
             className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors duration-200 text-sm"
           >
-            {showHistory ? 'Hide' : 'Show'} ({history.length})
+            {showHistory ? "Hide" : "Show"} ({history.length})
           </button>
         </div>
       </div>
@@ -41,21 +41,26 @@ export default function ConversionHistory({
       {showHistory && (
         <div className="space-y-2">
           {history.length === 0 ? (
-            <p className="text-gray-500 text-center py-4">No conversion history yet</p>
+            <p className="text-gray-500 text-center py-4">
+              No conversion history yet
+            </p>
           ) : (
             history.map((conversion, index) => (
               <div
                 key={index}
+                data-testid={`history-item-${index}`}
                 onClick={() => onLoadConversion(conversion)}
                 className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors duration-200"
               >
                 <div className="flex justify-between items-center">
                   <div className="flex-1">
                     <div className="font-semibold text-gray-900">
-                      {formatAmount(conversion.amount)} {conversion.from} → {formatAmount(conversion.result)} {conversion.to}
+                      {formatAmount(conversion.amount)} {conversion.from} →{" "}
+                      {formatAmount(conversion.result)} {conversion.to}
                     </div>
                     <div className="text-sm text-gray-600">
-                      Rate: 1 {conversion.from} = {formatAmount(conversion.rate, 4)} {conversion.to}
+                      Rate: 1 {conversion.from} ={" "}
+                      {formatAmount(conversion.rate, 4)} {conversion.to}
                     </div>
                   </div>
                   <div className="text-sm text-gray-500">
