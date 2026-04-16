@@ -1,8 +1,8 @@
-import AmountInput from './AmountInput';
-import CurrencySelect from './CurrencySelect';
-import SwapButton from './SwapButton';
-import ConversionResult from './ConversionResult';
-import { ExchangeRates } from '@/types';
+import AmountInput from "./AmountInput";
+import CurrencySelect from "./CurrencySelect";
+import SwapButton from "./SwapButton";
+import ConversionResult from "./ConversionResult";
+import { ExchangeRates } from "@/types";
 
 interface ConverterFormProps {
   amount: string;
@@ -29,9 +29,10 @@ export default function ConverterForm({
   onToCurrencyChange,
   onSwap,
 }: ConverterFormProps) {
-  const currentRate = exchangeRates && fromCurrency && toCurrency
-    ? exchangeRates.rates[toCurrency] / exchangeRates.rates[fromCurrency]
-    : null;
+  const currentRate =
+    exchangeRates && fromCurrency && toCurrency
+      ? exchangeRates.rates[toCurrency] / exchangeRates.rates[fromCurrency]
+      : null;
 
   return (
     <div className="space-y-4">
@@ -47,6 +48,7 @@ export default function ConverterForm({
           <CurrencySelect
             value={fromCurrency}
             onChange={onFromCurrencyChange}
+            exclude={toCurrency}
           />
 
           <SwapButton onClick={onSwap} />
@@ -54,9 +56,10 @@ export default function ConverterForm({
           <CurrencySelect
             value={toCurrency}
             onChange={onToCurrencyChange}
+            exclude={fromCurrency}
           />
         </div>
-        
+
         {/* Error message below the row */}
         {validationError && (
           <p className="text-sm text-red-600 px-1">{validationError}</p>
