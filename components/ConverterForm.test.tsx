@@ -27,6 +27,11 @@ describe("ConverterForm", () => {
     onFromCurrencyChange: jest.fn(),
     onToCurrencyChange: jest.fn(),
     onSwap: jest.fn(),
+    // Provide no-op for optional refresh props to avoid test errors
+    onRefreshRates: undefined,
+    refreshLoading: false,
+    refreshError: null,
+    refreshSuccess: false,
   };
 
   beforeEach(() => {

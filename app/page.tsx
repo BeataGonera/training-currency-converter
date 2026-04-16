@@ -1,20 +1,47 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import PageHeader from '@/components/PageHeader';
-import PageFooter from '@/components/PageFooter';
-import ErrorMessage from '@/components/ErrorMessage';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ConverterForm from '@/components/ConverterForm';
-import ConversionHistory from '@/components/ConversionHistory';
-import { useExchangeRates } from '@/hooks/useExchangeRates';
-import { useConverter } from '@/hooks/useConverter';
+import { useState } from "react";
+import PageHeader from "@/components/PageHeader";
+import PageFooter from "@/components/PageFooter";
+import ErrorMessage from "@/components/ErrorMessage";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import ConverterForm from "@/components/ConverterForm";
+import ConversionHistory from "@/components/ConversionHistory";
+import { useExchangeRates } from "@/hooks/useExchangeRates";
+import { RefreshCurrencyRates } from "@/components";
+import { useConverter } from "@/hooks/useConverter";
 
 export default function Home() {
   const [showHistory, setShowHistory] = useState<boolean>(false);
-  
+
   // Fetch exchange rates
   const { exchangeRates, loading, error } = useExchangeRates();
+
+  // Refresh state for button
+  const [refreshLoading, setRefreshLoading] = useState(false);
+  const [refreshError, setRefreshError] = useState<string | null>(null);
+  const [refreshSuccess, setRefreshSuccess] = useState(false);
+
+  // Imperative refresh for current pair only
+  const handleRefreshRates = async () => {
+    setRefreshLoading(true);
+    setRefreshError(null);
+    setRefreshSuccess(false);
+    try {
+      const response = await fetch(
+        `/api/rates?base=${fromCurrency}&symbols=${toCurrency}`,
+      );
+      const data = await response.json();
+      if (!data.success)
+        throw new Error(data.error || "Failed to refresh rates");
+      setRefreshSuccess(true);
+      // Optionally update exchangeRates here if needed
+    } catch (err: any) {
+      setRefreshError(err.message || "Failed to refresh rates");
+    } finally {
+      setRefreshLoading(false);
+    }
+  };
 
   // Conversion logic
   const {
@@ -58,6 +85,10 @@ export default function Home() {
               onFromCurrencyChange={setFromCurrency}
               onToCurrencyChange={setToCurrency}
               onSwap={handleSwap}
+              onRefreshRates={handleRefreshRates}
+              refreshLoading={refreshLoading}
+              refreshError={refreshError}
+              refreshSuccess={refreshSuccess}
             />
           )}
         </div>

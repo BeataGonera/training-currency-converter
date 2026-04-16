@@ -3,6 +3,7 @@ import CurrencySelect from "./CurrencySelect";
 import SwapButton from "./SwapButton";
 import ConversionResult from "./ConversionResult";
 import { ExchangeRates } from "@/types";
+import RefreshCurrencyRates from "./RefreshCurrencyRates";
 
 interface ConverterFormProps {
   amount: string;
@@ -15,6 +16,10 @@ interface ConverterFormProps {
   onFromCurrencyChange: (value: string) => void;
   onToCurrencyChange: (value: string) => void;
   onSwap: () => void;
+  onRefreshRates?: () => Promise<void>;
+  refreshLoading?: boolean;
+  refreshError?: string | null;
+  refreshSuccess?: boolean;
 }
 
 export default function ConverterForm({
@@ -28,6 +33,10 @@ export default function ConverterForm({
   onFromCurrencyChange,
   onToCurrencyChange,
   onSwap,
+  onRefreshRates,
+  refreshLoading,
+  refreshError,
+  refreshSuccess,
 }: ConverterFormProps) {
   const currentRate =
     exchangeRates && fromCurrency && toCurrency
@@ -58,6 +67,16 @@ export default function ConverterForm({
             onChange={onToCurrencyChange}
             exclude={fromCurrency}
           />
+
+          {/* RefreshCurrencyRates button next to selectors */}
+          {onRefreshRates && (
+            <RefreshCurrencyRates
+              onRefresh={onRefreshRates}
+              loading={!!refreshLoading}
+              error={refreshError}
+              success={refreshSuccess}
+            />
+          )}
         </div>
 
         {/* Error message below the row */}
